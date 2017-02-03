@@ -1,0 +1,936 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="three.min.js"></script>
+    <script src="human.js"></script>
+</head>
+
+<body>
+<h1>"Волейболна забивка в салона (има звуци на топката, ако махнете музичката)"<br>
+    <small>ф.н. 81295 &ndash; група 3 &ndash; Камен Петров</small>
+</h1>
+
+<script>
+
+    // ИЗПОЛЗВАН Е ВАШИЯТ ШАБЛОН ОТ ДОМАШНОТО ЗА МАНЕКЕНА ! ( Ето маркирах чуждия код )
+
+    // нагласяване на цвета и центрирането на текста с имената ви
+    document.getElementsByTagName('h1')[0].style = 'color:white; text-align:center; font-size:1.75em';
+
+    // рисувателно поле на цял екран
+    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.domElement.style = 'width:100%; height:100%; position:fixed; top:0; left:0; z-index:-1;';
+
+    // сцена и камера
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 2000);
+    camera.position.set(0, 50, 550);
+
+    // светлини
+    var light = new THREE.DirectionalLight('lightblue', 0.8);
+    light.position.set(0, 1, 4);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight('white', 0.5));
+
+    // функция за анимиране на сцената
+    var t = 1; // време
+    function drawFrame() {
+        requestAnimationFrame(drawFrame);
+        if (animate) animate(t++);
+        renderer.render(scene, camera);
+    }
+
+    //Терен | Props
+
+    var audio = new Audio('ESG.mp3');
+    audio.play();
+
+    //Поле
+
+    // 60 units ~ 2 meters
+
+    var floorPositionY = -32;
+
+    //Стени и под
+
+    var geometry = new THREE.BoxGeometry(2000, 0.1, 2000);
+    var material = new THREE.MeshLambertMaterial({color: 0x67A2F0});
+    var floor = new THREE.Mesh(geometry, material);
+    floor.position.y = floorPositionY;
+    scene.add(floor);
+
+    var geometry = new THREE.BoxGeometry(2000, 500, 0.1);
+    var material = new THREE.MeshLambertMaterial({color: 0x67A2F0});
+    var wall = new THREE.Mesh(geometry, material);
+    wall.position.z = -1000;
+    wall.position.y = 250 + floorPositionY;
+
+    scene.add(wall);
+
+    var wall = new THREE.Mesh(geometry, material);
+    wall.position.z = 1000;
+    wall.position.y = 250 + floorPositionY;
+
+    scene.add(wall);
+
+    var wall = new THREE.Mesh(geometry, material);
+    wall.rotation.y = Math.PI / 2;
+    wall.position.x = 1000;
+    wall.position.y = 250 + floorPositionY;
+
+    scene.add(wall);
+
+    var wall = new THREE.Mesh(geometry, material);
+    wall.rotation.y = Math.PI / 2;
+    wall.position.x = -1000;
+    wall.position.y = 250 + floorPositionY;
+
+    scene.add(wall);
+
+    //Полето
+
+    var geometry = new THREE.BoxGeometry(540, 0.3, 270);
+    var material = new THREE.MeshLambertMaterial({color: 0xE88C23});
+    var court = new THREE.Mesh(geometry, material);
+    court.position.y = floorPositionY;
+    scene.add(court);
+
+    //Линиите му
+
+    var geometry = new THREE.BoxGeometry(5, 0.5, 270);
+    var material = new THREE.MeshLambertMaterial({color: "white"});
+    var nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.position.y = floorPositionY;
+
+
+    scene.add(nineMetersLine);
+
+    nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.position.x = -270;
+    nineMetersLine.position.y = floorPositionY;
+    scene.add(nineMetersLine);
+
+    nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.position.x = 270;
+    nineMetersLine.position.y = floorPositionY;
+    scene.add(nineMetersLine);
+
+    nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.position.x = -90;
+    nineMetersLine.position.y = floorPositionY;
+    scene.add(nineMetersLine);
+
+    nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.position.x = 90;
+    nineMetersLine.position.y = floorPositionY;
+    scene.add(nineMetersLine);
+
+    nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.rotation.y = Math.PI / 2;
+    nineMetersLine.position.x = -270 / 2;
+    nineMetersLine.position.z = -270 / 2;
+    nineMetersLine.position.y = floorPositionY;
+    scene.add(nineMetersLine);
+
+    nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.rotation.y = Math.PI / 2;
+    nineMetersLine.position.x = 270 / 2;
+    nineMetersLine.position.z = -270 / 2;
+    nineMetersLine.position.y = floorPositionY;
+    scene.add(nineMetersLine);
+
+    nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.rotation.y = Math.PI / 2;
+    nineMetersLine.position.x = -270 / 2;
+    nineMetersLine.position.z = 270 / 2;
+    nineMetersLine.position.y = floorPositionY;
+    scene.add(nineMetersLine);
+
+    nineMetersLine = new THREE.Mesh(geometry, material);
+    nineMetersLine.rotation.y = Math.PI / 2;
+    nineMetersLine.position.x = 270 / 2;
+    nineMetersLine.position.z = 270 / 2;
+    nineMetersLine.position.y = floorPositionY;
+    scene.add(nineMetersLine);
+
+    //Стълбове
+
+    var geometry = new THREE.CylinderGeometry(3, 3, 110, 60);
+    var material = new THREE.MeshLambertMaterial({color: 0xF2D0AA});
+
+    var pillar = new THREE.Mesh(geometry, material);
+    pillar.position.z = -170;
+    scene.add(pillar);
+
+    var pillar = new THREE.Mesh(geometry, material);
+    pillar.position.z = 170;
+    scene.add(pillar);
+
+    //Мрежа
+    var geometry = new THREE.BoxGeometry(1, 5, 300);
+    var material = new THREE.MeshLambertMaterial({color: "white"});
+
+    var topNetLine = new THREE.Mesh(geometry, material);
+    topNetLine.position.y = floorPositionY + 80;
+    scene.add(topNetLine);
+
+    var bottonNetLine = new THREE.Mesh(geometry, material);
+    bottonNetLine.position.y = floorPositionY + 45;
+    scene.add(bottonNetLine);
+
+    var geometry = new THREE.BoxGeometry(1, 35, 5);
+    var material = new THREE.MeshLambertMaterial({color: "white"});
+
+    var sideNetLine = new THREE.Mesh(geometry, material);
+    sideNetLine.position.y = floorPositionY + (45 + 80) / 2;
+    sideNetLine.position.z = 270 / 2;
+    scene.add(sideNetLine);
+
+    var sideNetLine = new THREE.Mesh(geometry, material);
+    sideNetLine.position.y = floorPositionY + (45 + 80) / 2;
+    sideNetLine.position.z = -270 / 2;
+    scene.add(sideNetLine);
+
+    var sideNetLine = new THREE.Mesh(geometry, material);
+    sideNetLine.position.y = floorPositionY + (45 + 80) / 2;
+    sideNetLine.position.z = 270 / 2 + 15 - 2.5;
+    scene.add(sideNetLine);
+
+    var sideNetLine = new THREE.Mesh(geometry, material);
+    sideNetLine.position.y = floorPositionY + (45 + 80) / 2;
+    sideNetLine.position.z = -270 / 2 - 15 + 2.5;
+    scene.add(sideNetLine);
+
+    //Антени
+
+    var geometry = new THREE.CylinderGeometry(0.2, 0.2, 50, 60);
+    var material = new THREE.MeshLambertMaterial({color: "red"});
+
+    var antenna = new THREE.Mesh(geometry, material);
+    antenna.position.z = 270 / 2;
+    antenna.position.y = 60;
+    scene.add(antenna);
+
+    var antenna = new THREE.Mesh(geometry, material);
+    antenna.position.z = -270 / 2;
+    antenna.position.y = 60;
+    scene.add(antenna);
+
+    var geometry = new THREE.CylinderGeometry(0.1, 0.1, 34, 60);
+    var material = new THREE.MeshLambertMaterial({color: "black"});
+
+    //Пак мрежа
+
+    var amountOfVerticalRopes = 100;
+    for (let i = 0; i < amountOfVerticalRopes; i++) {
+        var netRopes = new THREE.Mesh(geometry, material);
+        netRopes.position.z = -270 / 2 + i * (270 / amountOfVerticalRopes);
+        netRopes.position.y = 30;
+        scene.add(netRopes);
+    }
+
+    var geometry = new THREE.CylinderGeometry(0.1, 0.1, 270, 60);
+    var material = new THREE.MeshLambertMaterial({color: "black"});
+
+    var amountOfHorizontalRopes = 30;
+    for (let i = 0; i < amountOfHorizontalRopes; i++) {
+        var netRopes = new THREE.Mesh(geometry, material);
+        netRopes.rotation.x = Math.PI / 2;
+        netRopes.position.y = floorPositionY + 45 + i * (35 / amountOfHorizontalRopes);
+        scene.add(netRopes);
+    }
+
+    var geometry = new THREE.CylinderGeometry(0.5, 0.5, 40, 60);
+    var material = new THREE.MeshLambertMaterial({color: "white"});
+
+    var smallRopedSupportingNet = new THREE.Mesh(geometry, material);
+    smallRopedSupportingNet.rotation.x = Math.PI / 2;
+    smallRopedSupportingNet.position.z = -270 / 2 - 15;
+    smallRopedSupportingNet.position.y = floorPositionY + 80 + 1.9;
+    scene.add(smallRopedSupportingNet);
+
+    var smallRopedSupportingNet = new THREE.Mesh(geometry, material);
+    smallRopedSupportingNet.rotation.x = Math.PI / 2;
+    smallRopedSupportingNet.position.z = 270 / 2 + 15;
+    smallRopedSupportingNet.position.y = floorPositionY + 80 + 1.9;
+    scene.add(smallRopedSupportingNet);
+
+    var smallRopedSupportingNet = new THREE.Mesh(geometry, material);
+    smallRopedSupportingNet.rotation.x = Math.PI / 2;
+    smallRopedSupportingNet.position.z = 270 / 2 + 15;
+    smallRopedSupportingNet.position.y = floorPositionY + 45 + 1.9;
+    scene.add(smallRopedSupportingNet);
+
+    var smallRopedSupportingNet = new THREE.Mesh(geometry, material);
+    smallRopedSupportingNet.rotation.x = Math.PI / 2;
+    smallRopedSupportingNet.position.z = -270 / 2 - 15;
+    smallRopedSupportingNet.position.y = floorPositionY + 45 + 1.9;
+    scene.add(smallRopedSupportingNet);
+
+    //---------------------------------------------------------------------------
+
+
+    // играчи
+    var spiker = мъжествен();
+    spiker.position.x = -140;
+    spiker.position.z = -120;
+    spiker.rotation.y = -Math.PI / 4;
+
+    spiker.л_ръка.врът(0, 0, -30);
+    spiker.л_лакът.врът(-30, 0, -30);
+    spiker.л_китка.врът(0, 90, 0);
+    spiker.л_китка.врът(0, 90, 0);
+
+    spiker.д_ръка.врът(0, 0, -30);
+    spiker.д_лакът.врът(30, 0, -30);
+    spiker.д_китка.врът(0, 90, 0);
+
+    spiker.глава.врът(0, 0, -45);
+
+
+    var setter = мъжествен();
+    setter.rotation.y = Math.PI / 1.3;
+    setter.position.x = -15;
+
+
+    //топка
+
+
+    var ballSpeedBounceX = 40;
+    var ballSpeedBounce = 20;
+    var ballSlowMult = 1.1;
+
+    var geometry = new THREE.SphereGeometry(4, 60, 60);
+    var material = new THREE.MeshLambertMaterial({color: 0xffff00});
+    var ball = new THREE.Mesh(geometry, material);
+    ball.position.x = -130;
+    ball.position.z = -110;
+    ball.position.y += 5;
+    scene.add(ball);
+
+
+    // анимация на човечето. Лошо е структурирана. Вместо да направя всяко движение на всеки обект от делен if стана малко мазало.
+    animate = function (t) {
+        // тук се описват динамичните елементи на позата
+        // като променливата t е номер на кадър, като се
+        // очаква 1 секунда да е приблизително 60 кадъра
+
+        if (t > 20 && t < 35) {
+            var speed = 10;
+            spiker.л_ръка.rotation.z -= Math.PI / 40;
+            spiker.л_лакът.rotation.z -= Math.PI / 60;
+            spiker.л_лакът.rotation.y -= Math.PI / 100;
+
+            spiker.д_ръка.rotation.z -= Math.PI / 40;
+            spiker.д_лакът.rotation.z -= Math.PI / 60;
+            spiker.д_лакът.rotation.y += Math.PI / 100;
+
+            if (t < 30) {
+                spiker.глава.rotation.z += Math.PI / 25;
+            }
+
+
+            var ballSpeed = 7 - 0.25 * t + 5;
+            ball.position.y += ballSpeed;
+            ball.position.z -= 0.2;
+            ball.position.x -= 0.2;
+
+        }
+        if (t >= 35 && t < 75) {
+            //spiker
+            if (t < 55) {
+                var ballSpeed = 7 - 0.31 * t + 5;
+                ball.position.y += ballSpeed;
+                ball.position.z -= 0.2;
+                ball.position.x -= 0.2;
+
+                spiker.л_ръка.rotation.z -= Math.PI / 100;
+                spiker.л_ръка.rotation.y -= Math.PI / 50;
+
+                spiker.д_ръка.rotation.z -= Math.PI / 100;
+                spiker.д_ръка.rotation.y += Math.PI / 50;
+
+            }
+            else if (t < 60) {
+                var ballSpeed = 7 - 0.25 * t + 6;
+                ball.position.y += ballSpeed;
+                ball.position.z -= 0.2;
+                ball.position.x -= 0.2;
+
+                spiker.л_лакът.rotation.z -= Math.PI / 30;
+                spiker.д_лакът.rotation.z -= Math.PI / 30;
+            }
+            else {
+                var temp = (t % 58) - 29;
+
+                ball.position.y = -0.1 * (temp * temp - 29 * 29) + 26;
+                ball.position.x += Math.abs(spiker.position.x - setter.position.x) / 60;
+                ball.position.z += Math.abs(spiker.position.x - setter.position.x) / 60;
+
+                if (t < 65) {
+                    spiker.л_лакът.rotation.z += Math.PI / 10;
+                    spiker.л_ръка.rotation.x += Math.PI / 60;
+
+                    spiker.д_лакът.rotation.z += Math.PI / 10;
+                    spiker.д_ръка.rotation.x -= Math.PI / 60;
+                }
+                else if (t >= 65) {
+                    spiker.л_лакът.rotation.z -= Math.PI / 30;
+                    spiker.л_ръка.rotation.x -= Math.PI / 120;
+                    spiker.л_ръка.rotation.y += Math.PI / 50;
+
+                    spiker.д_лакът.rotation.z -= Math.PI / 30;
+                    spiker.д_ръка.rotation.x += Math.PI / 120;
+                    spiker.д_ръка.rotation.y -= Math.PI / 50;
+                }
+
+
+            }
+
+
+        }
+        if (t >= 75 && t < 120) {
+            //ball and spiker
+            if (t > 80 && t < 100) {
+                spiker.глава.rotation.z -= Math.PI / 200;
+            }
+
+            if (t < 110) {
+                ball.position.x += Math.abs(spiker.position.x - setter.position.x) / 50;
+                ball.position.z += Math.abs(spiker.position.z - setter.position.z) / 50;
+
+                var temp = (t % 58) - 29;
+
+                ball.position.y = -0.1 * (temp * temp - 29 * 29) + 26;
+
+            }
+            else {
+
+                var temp = ((t % 68) - 34 - 42) * 30 / 34;
+
+                ball.position.z -= 68 / 38;
+                ball.position.y = -0.1 * (temp * temp - 30 * 30) + 60;
+            }
+
+            //setter
+            if (t > 75) {
+                if (t < 90) {
+                    if (t < 85) {
+                        setter.position.x += 0.15;
+                        setter.position.z -= 0.15;
+                        setter.л_крак.rotation.x += Math.PI / 70;
+                        setter.д_крак.rotation.x += Math.PI / 150;
+
+                        setter.л_лакът.rotation.z -= Math.PI / 20;
+                        setter.д_лакът.rotation.z -= Math.PI / 20;
+                    }
+                    else {
+                        setter.position.x -= 1.6;
+                        setter.position.z += 1.6;
+                        setter.position.y -= 0.5;
+
+                        setter.л_крак.rotation.x -= Math.PI / 50;
+                        setter.д_крак.rotation.x -= Math.PI / 50;
+                        //setter.д_крак.rotation.y += Math.PI/100;
+
+                        setter.л_крак.rotation.z -= Math.PI / 40;
+                        setter.д_крак.rotation.z -= Math.PI / 40;
+
+                        //setter.тяло.rotate.z += 1;
+
+                        setter.л_коляно.rotation.z += Math.PI / 20;
+                        setter.д_коляно.rotation.z += Math.PI / 20;
+
+                        setter.л_глезен.rotation.z -= Math.PI / 40;
+                        setter.д_глезен.rotation.z -= Math.PI / 40;
+
+                        setter.л_ръка.rotation.z -= Math.PI / 20;
+                        setter.д_ръка.rotation.z -= Math.PI / 20;
+
+
+                    }
+
+                    setter.rotation.y -= Math.PI /= 70;
+
+                }
+                else // 90+
+                {
+
+
+                    if (t > 95 && t < 120) {
+                        if (t < 105) {
+                            setter.л_ръка.rotation.z -= Math.PI / 15;
+                            setter.д_ръка.rotation.z -= Math.PI / 15;
+
+                            setter.л_ръка.rotation.x -= Math.PI / 35;
+                            setter.д_ръка.rotation.x += Math.PI / 35;
+
+                            setter.л_лакът.rotation.y += Math.PI / 15;
+                            setter.д_лакът.rotation.y -= Math.PI / 15;
+                        }
+                        else if (t < 110) {
+                            setter.л_лакът.rotation.z -= Math.PI / 30;
+                            setter.д_лакът.rotation.z -= Math.PI / 30;
+                        }
+                        else {
+                            setter.л_лакът.rotation.z += Math.PI / 30;
+                            setter.д_лакът.rotation.z += Math.PI / 30;
+                        }
+
+                        var setterJumpSpeed = 4 - (t - 95) / 4;
+                        setter.position.y += setterJumpSpeed;
+                    }
+
+                    setter.л_крак.rotation.z += Math.PI / 300;
+                    setter.д_крак.rotation.z += Math.PI / 300;
+
+                    //setter.тяло.rotate.z += 1;
+
+                    setter.л_коляно.rotation.z -= Math.PI / 200;
+                    setter.д_коляно.rotation.z -= Math.PI / 200;
+
+                    if (t < 110) {
+                        setter.л_глезен.rotation.z += Math.PI / 50;
+                        setter.д_глезен.rotation.z += Math.PI / 50;
+                    }
+
+                }
+            }
+
+
+            if (t < 90) {
+                spiker.л_ръка.rotation.z += Math.PI / 25;
+                spiker.л_ръка.rotation.y += Math.PI / 70;
+                spiker.л_лакът.rotation.z -= Math.PI / 50;
+
+                spiker.д_ръка.rotation.z += Math.PI / 25;
+                spiker.д_ръка.rotation.y -= Math.PI / 70;
+                spiker.д_лакът.rotation.z -= Math.PI / 50;
+            }
+            else if (t < 100) {
+
+                if (t > 95) {
+                    spiker.position.x += 1;
+                }
+                else {
+                    spiker.position.y -= 0.2;
+                    spiker.position.x += 0.3;
+                    spiker.rotation.z -= Math.PI / 100;
+                    spiker.д_крак.rotation.z -= Math.PI / 60;
+                    spiker.д_коляно.rotation.z += Math.PI / 60;
+                    spiker.д_глезен.rotation.z -= Math.PI / 80;
+                }
+
+
+                spiker.rotation.y += Math.PI / 70;
+
+
+                spiker.тяло.rotation.x -= Math.PI / 150;
+                spiker.таз.rotation.z -= Math.PI / 150;
+
+
+                spiker.л_крак.rotation.z -= Math.PI / 40;
+                spiker.л_коляно.rotation.z += Math.PI / 50;
+
+
+                spiker.л_ръка.rotation.z -= Math.PI / 30;
+                spiker.л_лакът.rotation.z += Math.PI / 20;
+
+                spiker.д_ръка.rotation.z -= Math.PI / 30;
+                spiker.д_лакът.rotation.z += Math.PI / 20;
+            }
+
+
+        }
+
+        //quickfix
+        if (t >= 170 && t < 176) {
+            var temp = ((t % 68) - 22.05 + 16) * 30 / 34;
+            ball.position.z -= 60 / 38;
+            ball.position.y = -0.1 * (temp * temp - 30 * 30) + 60;
+        }
+
+        if(t == 176)
+        {
+            var audio = new Audio('ballHitSound.mp3');
+            audio.play();
+        }
+
+        // ball was hit so it bounces
+        if (t > 176) {
+            if(ballSpeedBounceX < 2 && ball.position.y > -35 && ball.position.y <= - 28 )
+            {
+
+                ball.position.y = -28;
+            }
+            else
+            {
+                ballSlowMult *= 1.01;
+                ballSpeedBounce = ballSpeedBounce + 1.5
+                console.log(ballSlowMult);
+
+
+                if (ball.position.y < -28) {
+
+                    var audio = new Audio('ballBounceSound.mp3');
+                    audio.play();
+
+                    ballSpeedBounce *= -1/ballSlowMult;
+                    ballSpeedBounceX *= 1/ballSlowMult;
+                }
+                if (ball.position.x > 995) {
+
+                    var audio = new Audio('ballBounceSound.mp3');
+                    audio.play();
+
+                    ballSpeedBounceX *= -1/(ballSlowMult + 0.2);
+                }
+                ball.position.x += ballSpeedBounceX;
+                ball.position.y -= ballSpeedBounce;
+            }
+
+        }
+
+
+        if (t >= 120 && t < 170) {
+            if (t < 127) {
+                var setterJumpSpeed = 3.7 - (t - 95) / 4;
+                setter.position.y += setterJumpSpeed;
+
+                setter.л_крак.rotation.z -= Math.PI / 40;
+                setter.д_крак.rotation.z -= Math.PI / 40;
+
+                //setter.тяло.rotate.z += 1;
+
+                setter.л_коляно.rotation.z += Math.PI / 25;
+                setter.д_коляно.rotation.z += Math.PI / 25;
+
+                setter.л_глезен.rotation.z -= Math.PI / 15;
+                setter.д_глезен.rotation.z -= Math.PI / 15;
+
+                setter.л_ръка.rotation.z += Math.PI / 20;
+                setter.д_ръка.rotation.z += Math.PI / 20;
+
+                setter.л_ръка.rotation.x -= Math.PI / 30;
+                setter.д_ръка.rotation.x += Math.PI / 30;
+            }
+            else if (t > 130 && t < 150) {
+                setter.position.y += 0.2;
+
+                setter.л_крак.rotation.z += Math.PI / 150;
+                setter.д_крак.rotation.z += Math.PI / 150;
+
+                //setter.тяло.rotate.z += 1;
+
+                setter.л_коляно.rotation.z -= Math.PI / 70;
+                setter.д_коляно.rotation.z -= Math.PI / 70;
+
+
+                setter.л_глезен.rotation.z += Math.PI / 120;
+                setter.д_глезен.rotation.z += Math.PI / 120;
+
+                setter.л_ръка.rotation.y -= Math.PI / 70;
+                setter.д_ръка.rotation.y += Math.PI / 70;
+
+
+            }
+
+            if (t >= 150 && t < 165) {
+                setter.л_ръка.rotation.y -= Math.PI / 70;
+                setter.д_ръка.rotation.y += Math.PI / 70;
+            }
+            if (t < 136) var temp = ((t % 68) - 22.05 - 52) * 30 / 34;
+            else var temp = ((t % 68) - 22.05 + 16) * 30 / 34;
+
+            ball.position.z -= 60 / 38;
+            ball.position.y = -0.1 * (temp * temp - 30 * 30) + 60;
+        }
+
+        //spiker aproach, jump, spike and landing
+        if (t > 100 && t < 270) {
+
+            if (t < 270) {
+
+
+                //first step
+                if (t < 115) {
+                    spiker.position.x += 1.6;
+
+
+                    if (t < 108) {
+                        spiker.д_глезен.rotation.z += Math.PI / 60;
+                        spiker.л_крак.rotation.z -= Math.PI / 50;
+                        spiker.л_коляно.rotation.z += Math.PI / 50;
+
+                        spiker.тяло.rotation.x -= Math.PI / 150;
+                        spiker.таз.rotation.z -= Math.PI / 150;
+
+                        spiker.д_крак.rotation.z += Math.PI / 70;
+                        spiker.д_коляно.rotation.z -= Math.PI / 70;
+                    }
+                    else {
+                        spiker.д_глезен.rotation.z += Math.PI / 60;
+                        spiker.л_крак.rotation.z += Math.PI / 60;
+                        spiker.л_коляно.rotation.z -= Math.PI / 25;
+                    }
+
+                }
+
+                //second step
+                else if (t < 125) {
+                    spiker.position.x += 1;
+                    spiker.л_ръка.rotation.z += Math.PI / 20;
+                    spiker.д_ръка.rotation.z += Math.PI / 20;
+                    if (t < 120) {
+                        spiker.position.y -= 0.2;
+                        spiker.л_коляно.rotation.z += Math.PI / 40;
+                        spiker.д_коляно.rotation.z += Math.PI / 30;
+                        spiker.д_глезен.rotation.z -= Math.PI / 30;
+                        if (t < 116)spiker.л_глезен.rotation.z += Math.PI / 200;
+                        else spiker.л_глезен.rotation.z -= Math.PI / 70;
+                    }
+                    else {
+                        spiker.л_крак.rotation.z += Math.PI / 50;
+                        spiker.л_глезен.rotation.z += Math.PI / 300;
+                    }
+
+
+                    spiker.д_крак.rotation.z -= Math.PI / 30;
+                    spiker.д_коляно.rotation.z += Math.PI / 70;
+
+                }
+                else if (t < 250) {
+
+
+                    if (t < 135) {
+                        spiker.position.x += 1.6;
+                        spiker.л_ръка.rotation.z += Math.PI / 20;
+                        spiker.д_ръка.rotation.z += Math.PI / 20;
+                        spiker.л_глезен.rotation.z += Math.PI / 60;
+                        spiker.д_крак.rotation.z -= Math.PI / 50;
+                        spiker.д_коляно.rotation.z += Math.PI / 50;
+
+                        spiker.тяло.rotation.x -= Math.PI / 250;
+                        spiker.таз.rotation.z -= Math.PI / 250;
+
+                        spiker.л_крак.rotation.z += Math.PI / 70;
+                        spiker.л_коляно.rotation.z -= Math.PI / 70;
+                    }
+                    else if (t < 142) {
+                        spiker.position.x += 1.6;
+                        spiker.position.y -= 0.4;
+                        spiker.д_крак.rotation.z += Math.PI / 60;
+                        spiker.д_коляно.rotation.z -= Math.PI / 15;
+
+                        spiker.л_крак.rotation.z -= Math.PI / 60;
+                        spiker.л_коляно.rotation.z += Math.PI / 25;
+                    }
+                    else if (t < 250) {
+
+                        if (t < 155) {
+                            spiker.position.x += 1.4;
+                            spiker.position.y -= 0.2;
+                            if (t < 151) {
+                                spiker.л_глезен.rotation.z -= Math.PI / 40;
+                                spiker.л_крак.rotation.z -= Math.PI / 25;
+                                spiker.л_коляно.rotation.z += Math.PI / 35;
+                            }
+                            else {
+                                spiker.л_коляно.rotation.z -= Math.PI / 20;
+                            }
+
+
+                            if (t < 148) {
+                                spiker.д_крак.rotation.z -= Math.PI / 100;
+
+                            } else {
+                                spiker.д_глезен.rotation.z -= Math.PI / 60;
+                            }
+                            spiker.д_коляно.rotation.z += Math.PI / 35;
+                        }
+                        else // jump
+                        {
+
+
+                            if (t < 170) {
+                                spiker.таз.rotation.z += Math.PI / 60;
+                                spiker.rotation.y -= Math.PI / 60;
+                                spiker.л_глезен.rotation.z += Math.PI / 40;
+                                spiker.л_крак.rotation.z += Math.PI / 30;
+
+
+                                spiker.д_глезен.rotation.z += Math.PI / 40;
+                                spiker.д_крак.rotation.z += Math.PI / 25;
+
+
+                                if (t < 160) {
+                                    spiker.д_коляно.rotation.z -= Math.PI / 25;
+                                    spiker.л_коляно.rotation.z -= Math.PI / 25;
+                                }
+                                else {
+                                    spiker.д_коляно.rotation.z += Math.PI / 25;
+                                    spiker.л_коляно.rotation.z += Math.PI / 25;
+                                }
+
+                            }
+
+                            if (t < 160) {
+                                var spikerJumpSpeed = (t - 155) / 1.5;
+                            }
+                            else {
+                                var spikerJumpSpeed = 9 - (t - 155) / 2;
+                            }
+                            if (t < 186)
+                                spiker.position.y += spikerJumpSpeed;
+                            if (t < 200) {
+                                spiker.position.x += 0.4;
+                            }
+
+
+                        }
+
+                        if (t < 163) {
+                            spiker.л_ръка.rotation.z -= Math.PI / 17;
+                            spiker.л_лакът.rotation.z += Math.PI / 100;
+                            spiker.д_ръка.rotation.z -= Math.PI / 17;
+                            spiker.д_лакът.rotation.z += Math.PI / 100;
+                        }
+                        else if (t < 170) {
+                            if (t < 166) {
+                                spiker.л_ръка.rotation.z -= Math.PI / 17;
+                                spiker.л_лакът.rotation.z += Math.PI / 100;
+                            }
+
+                            spiker.д_ръка.rotation.y += Math.PI / 10;
+                            spiker.д_лакът.rotation.z += Math.PI / 10;
+                            spiker.д_лакът.rotation.y += Math.PI / 15;
+                        }
+                        else if (t < 180) {
+                            spiker.position.x += 0.4;
+                            spiker.л_ръка.rotation.z += Math.PI / 17;
+                            spiker.л_лакът.rotation.z += Math.PI / 80;
+
+                            if (t < 177) {
+                                spiker.д_ръка.rotation.y -= Math.PI / 15;
+                                spiker.д_ръка.rotation.z -= Math.PI / 20;
+                            }
+                            else {
+                                spiker.д_ръка.rotation.z += Math.PI / 5;
+                                spiker.д_ръка.rotation.y += Math.PI / 50;
+                                spiker.д_лакът.rotation.z += Math.PI / 4;
+                                spiker.д_лакът.rotation.x += Math.PI / 4;
+                            }
+
+                            spiker.таз.rotation.z -= Math.PI / 100;
+                            spiker.rotation.y += Math.PI / 100;
+
+                            spiker.л_глезен.rotation.z -= Math.PI / 40;
+                            spiker.л_крак.rotation.z -= Math.PI / 30;
+                            spiker.л_коляно.rotation.z -= Math.PI / 35;
+
+                            spiker.д_глезен.rotation.z -= Math.PI / 40;
+                            spiker.д_крак.rotation.z -= Math.PI / 25;
+                            spiker.д_коляно.rotation.z -= Math.PI / 30;
+
+
+                        }
+
+                        if (t >= 180 && t < 185) {
+
+                            spiker.position.x += 0.4;
+                            spiker.таз.rotation.z += Math.PI / 100;
+                            spiker.тяло.rotation.x += Math.PI / 35;
+                            spiker.rotation.z -= Math.PI / 80;
+                            spiker.rotation.y += Math.PI / 50;
+
+                            spiker.л_глезен.rotation.z += Math.PI / 40;
+                            spiker.л_крак.rotation.z += Math.PI / 30;
+                            spiker.л_коляно.rotation.z -= Math.PI / 35;
+
+                            spiker.д_глезен.rotation.z += Math.PI / 40;
+                            spiker.д_крак.rotation.z += Math.PI / 40;
+                            spiker.д_коляно.rotation.z -= Math.PI / 30;
+
+                            spiker.л_ръка.rotation.z += Math.PI / 17;
+                            spiker.д_ръка.rotation.z += Math.PI / 10;
+                            spiker.д_ръка.rotation.y -= Math.PI / 10;
+
+                        }
+                        if (t >= 184 && t < 195) {
+                            if (t < 186) {
+                                spiker.position.y -= 2.6;
+                            }
+
+                            if (t < 192)  spiker.position.y -= 0.75;
+                            else spiker.position.y -= 0.9;
+                            if (t < 188) {
+                                spiker.л_глезен.rotation.z -= Math.PI / 18;
+                                spiker.д_глезен.rotation.z -= Math.PI / 18;
+                            }
+                            else {
+                                spiker.л_глезен.rotation.z -= Math.PI / 50;
+                                spiker.д_глезен.rotation.z -= Math.PI / 50;
+                            }
+
+                            spiker.л_крак.rotation.z -= Math.PI / 80;
+                            spiker.л_коляно.rotation.z += Math.PI / 34;
+
+
+                            spiker.д_крак.rotation.z -= Math.PI / 70;
+                            spiker.д_коляно.rotation.z += Math.PI / 30;
+                        }
+                        if (t > 198 && t < 215) {
+                            // DAB
+                            spiker.л_ръка.rotation.z -= Math.PI / 25;
+                            spiker.л_ръка.rotation.y -= Math.PI / 30;
+                            spiker.л_лакът.rotation.x += Math.PI / 60;
+
+                            spiker.д_ръка.rotation.z -= Math.PI / 25;
+                            spiker.д_ръка.rotation.y += Math.PI / 30;
+                            spiker.д_лакът.rotation.z += Math.PI / 30;
+
+                            spiker.глава.rotation.z -= Math.PI / 50;
+                            spiker.глава.rotation.y -= Math.PI / 50;
+
+                            if (t < 203) {
+
+                                if (t >= 199 && t <= 200) {
+                                    spiker.position.y += 1;
+                                }
+
+                                spiker.position.y += 1.5;
+                                spiker.rotation.z += Math.PI / 70;
+                                spiker.л_крак.rotation.z += Math.PI / 17;
+                                spiker.л_коляно.rotation.z -= Math.PI / 10;
+
+                                spiker.л_глезен.rotation.z += Math.PI / 18;
+                                spiker.д_глезен.rotation.z += Math.PI / 18;
+
+                                spiker.д_крак.rotation.z += Math.PI / 17;
+                                spiker.д_коляно.rotation.z -= Math.PI / 10;
+                            }
+                        }
+
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        }
+
+
+        scene.rotation.y += 0.006;
+    }
+
+    drawFrame();
+</script>
+</body>
+</html>
